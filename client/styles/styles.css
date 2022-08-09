@@ -56,8 +56,8 @@ body {
 	gap: 0.5rem;
 	padding: 2rem;
 }
-.bills-container {
-	display: grid;
+.bill-container {
+	display: table-row;
 	grid-template-columns: 1fr 1fr;
 	gap: 0.5rem;
 	padding: 2rem;
