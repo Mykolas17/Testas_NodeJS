@@ -15,15 +15,18 @@ const fetchGroups = async () => {
 	}
 };
 
-const displayGroups = (data) => {
+const displayGroups = (groups) => {
 	const container = document.querySelector('.groups-container');
 	let html = '';
-	data.forEach((groups) => {
+	groups.forEach((group) => {
 		html += `
-        <div class="groups">
-            <h1>${groups.name}</h1>
-        </div>
-        
+		<button onClick="document.location.href='../bills/bills.html?groupId=${
+			group.id
+		}'">
+			<div id="${group.id}" class="group-button">
+				<h1>${group.id + '</br>' + group.name}</h1>
+			</div>
+        </button>
         `;
 	});
 	container.innerHTML = html;
