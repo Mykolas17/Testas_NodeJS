@@ -1,9 +1,16 @@
-const fetchCompanies = async () => {
+const fetchBills = async () => {
 	try {
-		const response = await fetch('http://localhost:8080/api/bills', {
-			//headers: {	Authorization: `Bearer ${localStorage.getItem('token')}`,},
-		});
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const params = Object.fromEntries(urlSearchParams.entries());
+		const response = await fetch(
+			'http://localhost:8080/api/bills/' + params['groupId'],
+			{
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+			}
+		);
 		const responseJson = await response.json();
+		console.log(responseJson);
+		//console.log('veikia');
 		return responseJson;
 	} catch (err) {
 		alert('Unexpected error!');
@@ -13,26 +20,29 @@ const fetchCompanies = async () => {
 	}
 };
 
-const displayBills = (data) => {
-	const container = document.querySelector('.bills-container');
+const displayBills = (bills) => {
+	const container = document.querySelector('.bill-container');
 	let html = '';
-	data.forEach((bills) => {
-		html += `
+	bills.forEach((bill) => {
+		html += `	
         <div class="bills">
-            <h1>${bills.name}</h1>
+            <h1>${bill.id + bill.amount + bill.description}</h1>
         </div>
-        
         `;
 	});
+	console.log(html);
 	container.innerHTML = html;
 };
 document.addEventListener('DOMContentLoaded', async () => {
-	//if (!localStorage.getItem('token')) location.replace('../login/login.html');
-	const bills = await fetchCompanies();
-	displayCompanies(companies);
+	if (!localStorage.getItem('token')) location.replace('../login/login.html');
+	const bills = await fetchBills();
+	console.log(bills);
+	displayBills(bills);
 });
 
-const onAddBill = async (data) => {
+// console.log('http://localhost:8080/api/bills/' + params['groupId']);
+
+const addBill = async (data) => {
 	try {
 		const response = await fetch('http://localhost:8080/api/bills', {
 			method: 'POST',
@@ -48,14 +58,20 @@ const onAddBill = async (data) => {
 		console.log(err);
 	}
 };
+console.log('http://localhost:8080/api/bills');
 
 document.querySelector('form').addEventListener('submit', async (event) => {
 	event.preventDefault();
 	const input = {
-		name: event.target.elements.name.value,
+		amount: event.target.elements.amount.value,
+		description: event.target.elements.description.value,
+		groupId,
 	};
-	onAddBill(input);
-	if (user.insertId) {
-		console.log(input);
+	const bill = await addBill(input);
+
+	if (bill.id) {
+		location.replace('../bills/bills.html');
+	} else {
+		alert('Not added');
 	}
 });
