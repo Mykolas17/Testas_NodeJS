@@ -22,14 +22,25 @@ const fetchBills = async () => {
 
 const displayBills = (bills) => {
 	const container = document.querySelector('.bill-container');
-	let html = '';
+	let html = `<table>
+	  <thead>
+	    <tr>
+		  <th>ID</th>
+		  <th>Description</th>
+		  <th>Amount</th>
+		</tr>
+	  </thead>
+	  <tbody>`;
 	bills.forEach((bill) => {
-		html += `	
-        <div class="bills">
-            <h1>${bill.id + bill.amount + bill.description}</h1>
-        </div>
+		html += `
+		<tr>
+		  <td>${bill.id}</td>
+		  <td>${bill.amount}</td>
+		  <td>${bill.description}</td>
+	    </tr>	
         `;
 	});
+	html += `</tbody></table>`;
 	console.log(html);
 	container.innerHTML = html;
 };
@@ -62,16 +73,29 @@ console.log('http://localhost:8080/api/bills');
 
 document.querySelector('form').addEventListener('submit', async (event) => {
 	event.preventDefault();
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const params = Object.fromEntries(urlSearchParams.entries());
+	const groupId = params['groupId'];
 	const input = {
 		amount: event.target.elements.amount.value,
 		description: event.target.elements.description.value,
-		groupId,
+		groupId: groupId,
 	};
 	const bill = await addBill(input);
 
 	if (bill.id) {
-		location.replace('../bills/bills.html');
+		location.replace('../bills/bills.html?groupId=' + groupId);
 	} else {
 		alert('Not added');
 	}
 });
+
+//event.preventDefault();
+//const input = {
+//	name: event.target.elements.name.value,
+//};
+//addBill(input);
+//if (user.insertId) {
+//	console.log(input);
+//}
+//});
