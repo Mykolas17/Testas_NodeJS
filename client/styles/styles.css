@@ -57,12 +57,11 @@ body {
 	padding: 2rem;
 }
 .bill-container {
-	display: table-row;
-	grid-template-columns: 1fr 1fr;
-	gap: 0.5rem;
-	padding: 2rem;
+	width: 850px;
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
 }
-
 .headshot-wraper {
 	display: flex;
 	flex-direction: column;
