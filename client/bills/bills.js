@@ -89,13 +89,3 @@ document.querySelector('form').addEventListener('submit', async (event) => {
 		alert('Not added');
 	}
 });
-
-//event.preventDefault();
-//const input = {
-//	name: event.target.elements.name.value,
-//};
-//addBill(input);
-//if (user.insertId) {
-//	console.log(input);
-//}
-//});
